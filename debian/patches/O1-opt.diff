@@ -1,0 +1,107 @@
+Index: b/LTmakefile.in
+===================================================================
+--- a/LTmakefile.in
++++ b/LTmakefile.in
+@@ -46,7 +46,7 @@ CC = gcc
+ CFLAGS = -I. -I$(MYHEADDIR) -I$(HOME)/include -I/usr/local/include @MYDEFS@ \
+   -D_XOPEN_SOURCE_EXTENDED=1 -D_GNU_SOURCE=1 -D__EXTENSIONS__=1 -D_HPUX_SOURCE=1 \
+   -D_POSIX_MAPPED_FILES=1 -D_POSIX_SYNCHRONIZED_IO=1 \
+-  -DPIC=1 -D_THREAD_SAFE=1 -D_REENTRANT=1 -DNDEBUG -O3
++  -DPIC=1 -D_THREAD_SAFE=1 -D_REENTRANT=1 -DNDEBUG -O1
+ LD = gcc
+ LIBLDFLAGS = -rpath $(MYLIBDIR) -R $(MYLIBDIR) \
+   -version-info $$(($(LIBVER)+$(LIBREV))):0:$(LIBREV) @LIBS@
+Index: b/Makefile.in
+===================================================================
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -75,7 +75,7 @@ CPPFLAGS = @CPPFLAGS@ -I$(srcdir) -I$(MY
+   -D_XOPEN_SOURCE_EXTENDED=1 -D_GNU_SOURCE=1 -D__EXTENSIONS__=1 -D_HPUX_SOURCE=1 \
+   -D_POSIX_MAPPED_FILES=1 -D_POSIX_SYNCHRONIZED_IO=1 \
+   -DPIC=1 -D_THREAD_SAFE=1 -D_REENTRANT=1 -DNDEBUG
+-CFLAGS = -Wall -pedantic -fPIC -fsigned-char -O3 -fomit-frame-pointer -fforce-addr @MYOPTS@
++CFLAGS = -Wall -pedantic -fPIC -fsigned-char -O1 -fomit-frame-pointer -fforce-addr @MYOPTS@
+ LD = @LD@
+ LIBS = -lqdbm @LIBS@
+ LIBLDFLAGS = @LDFLAGS@ -L. -L$(MYLIBDIR) -L$(HOME)/lib -L/usr/local/lib @LIBS@
+@@ -137,7 +137,7 @@ stable :
+ 
+ profile :
+ 	make MYLIBS="$(MYLIBS)" \
+-	  CFLAGS="-Wall -pedantic -fPIC -fsigned-char -O3 -pg -g -Werror" \
++	  CFLAGS="-Wall -pedantic -fPIC -fsigned-char -O1 -pg -g -Werror" \
+ 	  LDFLAGS="-static $(LDFLAGS)" all
+ 
+ 
+@@ -152,14 +152,14 @@ m64 :
+ 
+ 
+ pen4 :
+-	stdopt="-O3 -fomit-frame-pointer -minline-all-stringops" ; \
++	stdopt="-O1 -fomit-frame-pointer -minline-all-stringops" ; \
+ 	exopt="-march=pentium4 -minline-all-stringops -fprefetch-loop-arrays" ; \
+ 	  make MYLIBS="$(MYLIBS)" \
+ 	    CFLAGS="-Wall -pedantic -fPIC -fsigned-char $$stdopt $$exopt" all
+ 
+ 
+ k8 :
+-	stdopt="-O3 -fomit-frame-pointer -minline-all-stringops" ; \
++	stdopt="-O1 -fomit-frame-pointer -minline-all-stringops" ; \
+ 	exopt="-march=k8 -minline-all-stringops -fprefetch-loop-arrays" ; \
+ 	  make MYLIBS="$(MYLIBS)" \
+ 	    CFLAGS="-Wall -pedantic -fPIC -fsigned-char $$stdopt $$exopt" all
+Index: b/bros/Makefile
+===================================================================
+--- a/bros/Makefile
++++ b/bros/Makefile
+@@ -52,43 +52,43 @@ distclean : clean
+ 
+ qdbmtest : qdbmtest.c
+ 	gcc -I.. -I/usr/local/include -D_GNU_SOURCE=1 \
+-	  -Wall -ansi -pedantic -O3 -o $@ qdbmtest.c \
++	  -Wall -ansi -pedantic -O1 -o $@ qdbmtest.c \
+ 	  -static -L.. -L/usr/local/lib -lqdbm -lz -lc
+ 
+ 
+ ndbmtest : ndbmtest.c
+ 	gcc -I/usr/local/include -D_GNU_SOURCE=1 \
+-	  -Wall -ansi -pedantic -O3 -o $@ ndbmtest.c \
++	  -Wall -ansi -pedantic -O1 -o $@ ndbmtest.c \
+ 	  -static -L/usr/local/lib -lndbm -lc
+ 
+ 
+ sdbmtest : sdbmtest.c
+ 	gcc -I/usr/local/include -D_GNU_SOURCE=1 \
+-	  -Wall -ansi -pedantic -O3 -o $@ sdbmtest.c \
++	  -Wall -ansi -pedantic -O1 -o $@ sdbmtest.c \
+ 	  -static -L/usr/local/lib -lsdbm -lc
+ 
+ 
+ gdbmtest : gdbmtest.c
+ 	gcc -I/usr/local/include -D_GNU_SOURCE=1 \
+-	  -Wall -ansi -pedantic -O3 -o $@ gdbmtest.c \
++	  -Wall -ansi -pedantic -O1 -o $@ gdbmtest.c \
+ 	  -static -L/usr/local/lib -lgdbm -lc
+ 
+ 
+ tdbtest : tdbtest.c
+ 	gcc -I/usr/local/include -D_GNU_SOURCE=1 \
+-	  -Wall -ansi -pedantic -O3 -o $@ tdbtest.c \
++	  -Wall -ansi -pedantic -O1 -o $@ tdbtest.c \
+ 	  -static -L/usr/local/lib -ltdb -lc
+ 
+ 
+ cdbtest : cdbtest.c
+ 	gcc -I/usr/local/include -D_GNU_SOURCE=1 \
+-	  -Wall -ansi -pedantic -O3 -o $@ cdbtest.c \
++	  -Wall -ansi -pedantic -O1 -o $@ cdbtest.c \
+ 	  -static -L/usr/local/lib -lcdb -lc
+ 
+ 
+ bdbtest : bdbtest.c
+ 	gcc -I/usr/local/bdb/include -D_GNU_SOURCE=1 \
+-	  -Wall -O3 -o $@ bdbtest.c \
++	  -Wall -O1 -o $@ bdbtest.c \
+ 	  -static -L/usr/local/bdb/lib -ldb-4.4 -lpthread -lc
+ 
+ 

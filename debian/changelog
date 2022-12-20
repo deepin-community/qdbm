@@ -1,0 +1,425 @@
+qdbm (1.8.78-deepin1) unstable; urgency=medium
+
+  * Rebuild
+
+ -- Deepin Packages Builder <packages@deepin.org>  Mon, 14 Nov 2022 17:48:28 +0800
+
+qdbm (1.8.78-11) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * Remove constraints unnecessary since stretch:
+    + Build-Depends: Drop versioned constraint on debhelper.
+
+  [ Emmanuel Bourg ]
+  * Fixed the build failure with OpenJDK 17 (Closes: #981968)
+  * No longer support building with GCJ
+
+ -- Emmanuel Bourg <ebourg@apache.org>  Sat, 17 Apr 2021 21:08:32 +0200
+
+qdbm (1.8.78-10) unstable; urgency=medium
+
+  [ Ondřej Nový ]
+  * d/copyright: Use https protocol in Format field
+  * d/control: Removing redundant Priority field in binary package
+  * d/changelog: Remove trailing whitespaces
+  * d/rules: Remove trailing whitespaces
+
+  [ Debian Janitor ]
+  * Trim trailing whitespace.
+  * Use secure URI in Homepage field.
+  * Bump debhelper from old 9 to 10.
+  * Rely on pre-initialized dpkg-architecture variables.
+  * Fix day-of-week for changelog entry 1.8.78-1.
+  * Apply multi-arch hints.
+    + qdbm-doc: Add Multi-Arch: foreign.
+    + libqdbm++-dev, libqdbm-perl, libqdbm3++c2, ruby-qdbm: Add Multi-Arch:
+      same.
+
+  [ Vagrant Cascadian ]
+  * debian/rules: Add calls to dh_strip_nonderminism. (Closes: #979112)
+  * debian/control: Set Rules-Requires-Root to "no".
+  * debian/rules: Use /nonexistent for HOME.
+  * debian/control: Mark libqdbm++-dev, libqdbm-perl, libqdbm3++c2 and
+    ruby-qdbm as "Multi-Arch: no".
+
+ -- Vagrant Cascadian <vagrant@debian.org>  Thu, 07 Jan 2021 19:03:01 -0800
+
+qdbm (1.8.78-9) unstable; urgency=medium
+
+  * Fix Build-Profiles entry for libqdbm-java.
+  * Move build-java-stamp from build-indep to build-arch.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Wed, 11 Apr 2018 13:51:16 +0200
+
+qdbm (1.8.78-8) unstable; urgency=medium
+
+  * QA upload.
+  * Add a nojava profile.
+
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 10 Apr 2018 06:48:13 +0200
+
+qdbm (1.8.78-7) unstable; urgency=medium
+
+  * QA upload.
+  * Change maintainer to the Debian QA Group
+  * Fix include paths when building with GCJ.
+    Thanks to Jason Duerstock (Closes: #892200)
+  * Update Vcs-* to refer to new repository on Salsa
+
+ -- James Clarke <jrtc27@debian.org>  Tue, 06 Mar 2018 17:51:52 +0000
+
+qdbm (1.8.78-6.2) unstable; urgency=medium
+
+  * Non maintainer upload.
+  * Lower the optimization to -O1 to pass the test suite. Closes: #853627.
+  * Bump standards and debhelper versions.
+  * Don't set noopt flags, ignored anyway in the upstream build system.
+  * Do the extra/optional dance.
+  * ruby-qdbm: Remove obsolete ruby breaks/replaces/conflicts.
+
+ -- Matthias Klose <doko@debian.org>  Tue, 06 Feb 2018 16:12:44 +0100
+
+qdbm (1.8.78-6.1build2) bionic; urgency=medium
+
+  * No-change rebuild for ruby2.5 update.
+
+ -- Matthias Klose <doko@ubuntu.com>  Thu, 01 Feb 2018 19:01:58 +0000
+
+qdbm (1.8.78-6.1build1) artful; urgency=medium
+
+  * No-change rebuild for perl 5.26.0.
+
+ -- Matthias Klose <doko@ubuntu.com>  Wed, 26 Jul 2017 20:12:52 +0000
+
+qdbm (1.8.78-6.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Drop explicit dependency on g++-5. (Closes: #835952)
+  * Replace Build-Depends: perl-modules with just perl.
+
+ -- Christian Hofstaedtler <zeha@debian.org>  Mon, 19 Dec 2016 01:33:40 +0000
+
+qdbm (1.8.78-6) unstable; urgency=medium
+
+  * New Standards-Version: 3.9.6.
+  * update symbol file to fix ftbfs with gcc-5. (Closes: #791736)
+
+ -- KURASHIKI Satoru <lurdan@gmail.com>  Tue, 04 Aug 2015 14:15:52 +0900
+
+qdbm (1.8.78-5) unstable; urgency=medium
+
+  [ gregor herrmann ]
+  * Fix "hardcodes /usr/lib/perl5":
+    - add patch that passes INSTALLDIRS=vendor to perl Makefile.PL calls
+    - remove usr/lib/perl5 from debian/libqdbm-perl.dirs, files are in the
+      right directories now
+    - remove some now unneeded (re)moving in debian/rules and adjust paths
+    - use $Config{vendorarch} in debian/rules to get the perl library path at
+      build time
+    (Closes: #752806)
+
+ -- KURASHIKI Satoru <lurdan@gmail.com>  Mon, 07 Jul 2014 08:55:46 +0900
+
+qdbm (1.8.78-4) unstable; urgency=medium
+
+  * New Standards-Version: 3.9.5.
+  * update symbol file to fix ftbfs with gcc-4.9. (Closes: #746898)
+
+ -- KURASHIKI Satoru <lurdan@gmail.com>  Thu, 19 Jun 2014 23:48:34 +0900
+
+qdbm (1.8.78-3) unstable; urgency=low
+
+  * Drop ruby1.8 bindings. (Closes: #734346)
+
+ -- KURASHIKI Satoru <lurdan@gmail.com>  Tue, 07 Jan 2014 20:59:20 +0900
+
+qdbm (1.8.78-2) unstable; urgency=low
+
+  * Apply patch from Neil Williams
+    + to fix dependency issue about libxqdbm-dev. (Closes: #655702)
+  * Apply patch from Pino Toscano
+    + to support nocheck in DEB_BUILD_OPTIONS. (Closes: #648649)
+    + to support hurd. (Closes: #648663)
+
+ -- KURASHIKI Satoru <lurdan@gmail.com>  Fri, 27 Jan 2012 11:55:30 +0900
+
+qdbm (1.8.78-1) unstable; urgency=low
+
+  * Upstream homepage moved.
+  * New Upstream release.
+  * New Standards-Version: 3.9.2
+  * fix misplaced library symlinks.
+  * fix typo of package description. (Closes: #592058)
+  * libqdbm14: drop gdbm wrapping. (Closes: #620550)
+  * update ruby packaging for wheezy.
+  * debian/copyright: migrate DEP-5 format with fixing imcomplete listings.
+    Thanks to Bart Martens's review at mentors.d.n.
+
+ -- KURASHIKI Satoru <lurdan@gmail.com>  Thu, 13 Oct 2011 08:42:07 +0900
+
+qdbm (1.8.77-4) unstable; urgency=high
+
+  * Fix serious bugs:
+    + Apply patch from dai to fix upgrading from lenny. (Closes: #601990)
+    + Apply patch from dai to get rid of old libraries. (Closes: #602786)
+
+ -- KURASHIKI Satoru <lurdan@gmail.com>  Mon, 08 Nov 2010 20:06:06 +0900
+
+qdbm (1.8.77-3.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix FTBFS:
+    + Apply patch from Julien Cristau to replace STR2CSTR with StringValuePtr.
+    + Hack: avoid modifying $0 (frozen variable in 1.9.2)
+    + Add -I. to work around removal of relative requires in 1.9.2.
+    Closes: #592775
+
+ -- Lucas Nussbaum <lucas@lucas-nussbaum.net>  Sat, 18 Sep 2010 08:48:49 +0200
+
+qdbm (1.8.77-3) unstable; urgency=low
+
+  * Fix FTBTS again. (Closes: #589275)
+  * update libxqdbm2c2.symbols to demangle symbols name.
+
+ -- KURASHIKI Satoru <lurdan@gmail.com>  Thu, 22 Jul 2010 21:15:45 +0900
+
+qdbm (1.8.77-2) unstable; urgency=low
+
+  * New Standards-Version: 3.9.0
+  * debian/control: fix section overrides.
+  * Fix FTBTS adding build options for gcj. (Closes: #589275)
+  * fix lintian issues.
+
+ -- KURASHIKI Satoru <lurdan@gmail.com>  Fri, 16 Jul 2010 20:20:44 +0900
+
+qdbm (1.8.77-1) unstable; urgency=low
+
+  * Imported Upstream version 1.8.77
+  * Change binary package name of C++ library
+    (by Taku YASUI <tach@debian.org>)
+  * New Maintainer. (Closes: #541046)
+  * New Standards-Version: 3.8.4
+  * Change Build-Depends from gcj to default-jdk
+  * remove needless pkgconfig option. (Closes: #397614)
+  * fix refering paths of header files. (LP: #450672)
+  * fix lintian issues:
+      remove RPATH with chrpath.
+      change location of perl modules.
+  * build ruby binding for both 1.8 and 1.9.1.
+
+ -- KURASHIKI Satoru <lurdan@gmail.com>  Thu, 27 May 2010 21:46:19 +0900
+
+qdbm (1.8.74-1.4) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Oops, DEB_HOST_ARCH isn't neccesarily exported to build env
+
+ -- Riku Voipio <riku.voipio@iki.fi>  Fri, 12 Sep 2008 23:36:33 +0300
+
+qdbm (1.8.74-1.3) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * build java bindings on armel, closes: 498680
+  * use DEB_HOST_* instead od DEB_BUILD_* where appropriate
+  * Added homepage field
+
+ -- Riku Voipio <riku.voipio@iki.fi>  Fri, 12 Sep 2008 13:00:11 +0300
+
+qdbm (1.8.74-1.2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Don't build with java on alpha and arm. Closes: #477901.
+
+ -- Matthias Klose <doko@debian.org>  Sat, 10 May 2008 16:46:56 +0200
+
+qdbm (1.8.74-1.1) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * High-urgency upload for RC bugfix.
+  * Set HOME=$(CURDIR)/junkhome when building, otherwise the package build
+    will incorrectly look for headers there -- and fail when the directory
+    exists and is unreadable, as happens sometimes on sudo-using
+    autobuilders!  Closes: #398196.
+
+ -- Steve Langasek <vorlon@debian.org>  Sun, 12 Nov 2006 03:21:30 -0800
+
+qdbm (1.8.74-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Fri,  3 Nov 2006 17:14:30 +0900
+
+qdbm (1.8.73-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Tue, 31 Oct 2006 01:03:28 +0900
+
+qdbm (1.8.72-1) unstable; urgency=low
+
+  * New upstream release
+  * C++ API soname bump up to 3
+  * plus/Makefile.in: use -O0 for alpha architecture
+    closes: Bug#394626
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Sat, 28 Oct 2006 02:50:43 +0900
+
+qdbm (1.8.70-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Wed, 23 Aug 2006 13:25:29 +0900
+
+
+qdbm (1.8.69-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Thu, 17 Aug 2006 14:12:16 +0900
+
+qdbm (1.8.68-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Tue, 15 Aug 2006 15:07:25 +0900
+
+qdbm (1.8.67-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Sun, 13 Aug 2006 05:25:27 +0900
+
+qdbm (1.8.66-1) unstable; urgency=low
+
+  * New upstream release
+  * libqdbm.so ABI has been changed, soversion bump up to 14
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Sun,  6 Aug 2006 04:25:43 +0900
+
+qdbm (1.8.64-1) unstable; urgency=low
+
+  * New upstream release
+  * libqdbm.so ABI has been changed, so soversion bump up to 13
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Mon, 31 Jul 2006 06:04:35 +0900
+
+qdbm (1.8.63-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Sun, 30 Jul 2006 06:38:08 +0900
+
+qdbm (1.8.61-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Sun, 23 Jul 2006 07:55:43 +0900
+
+qdbm (1.8.51-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Wed, 10 May 2006 00:16:40 +0900
+
+qdbm (1.8.49-1) unstable; urgency=low
+
+  * New upstream release
+    closes: Bug#360423
+  * drop build-depends: g++-3.4 [arm m68k hppa]
+    closes: Bug#343017
+  * exclude kfreebsd-amd64 from build-depends for java as kfreebsd-i386
+    closes: Bug#361496
+  * remove build-depends on libgcj-dev
+    closes: Bug#359739
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Thu, 27 Apr 2006 00:10:55 +0900
+
+qdbm (1.8.33-2) unstable; urgency=low
+
+  * work around gcc-4.0 FTBFS on arm, m68k, hppa
+    debian/control: add "g++-3.4 [arm m68k hppa]" in Build-Depends:
+    debian/rules: check GCC4_ICES_HERE and modify CC/CPP/CXX to -3.4
+    closes: Bug#334038
+  * fix FTBFS java library on m68k
+    debian/rules: CC=gcc to configure in java/
+     jni.h is provided by libgcj6-dev, so java binary should be compiled
+     by gcc-4.0 instead of gcc-3.4.
+    closes: Bug#334666
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Tue, 15 Nov 2005 01:43:21 +0900
+
+qdbm (1.8.33-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * work around gcc-4.0 FTBFS on some architectures
+
+ -- LaMont Jones <lamont@debian.org>  Fri, 14 Oct 2005 19:28:39 +0000
+
+qdbm (1.8.33-1) unstable; urgency=low
+
+  * New upstream release
+  * remove build-dependency on *gcj* on kfreebsd-i386
+    closes: Bug#321298
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Fri, 16 Sep 2005 01:14:17 +0900
+
+qdbm (1.8.31-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Thu, 21 Jul 2005 00:54:41 +0900
+
+qdbm (1.8.30-2) unstable; urgency=low
+
+  * GCC 4.0 C++ ABI change.
+    rename libqdbm2++ to libqdbm2++c2 and conflicts/replaces libqdbm2++.
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Thu,  7 Jul 2005 15:58:26 +0000
+
+qdbm (1.8.30-1) unstable; urgency=low
+
+  * New upstream release
+  * libxqdbm.so bump up so version to 2. ABI changed to support
+    friend&namespace difference in g++-3/g++-4
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Sat, 11 Jun 2005 01:56:12 +0900
+
+qdbm (1.8.29-2) unstable; urgency=low
+
+  * fix FTBFS with g++-4.0
+    closes: Bug#312362
+  * fix FTBFS: add build-depends libgcj-dev
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Wed,  8 Jun 2005 12:40:15 +0900
+
+qdbm (1.8.29-1) unstable; urgency=low
+
+  * New upstream release
+  * remove libstdc++5-3.3-dev | libstdc++-dev and libgcj4-dev
+    from build-depends, since g++ and gcj depends on them.
+    closes: Bug#311947
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Wed,  8 Jun 2005 01:13:10 +0900
+
+qdbm (1.8.28-1) unstable; urgency=low
+
+  * New upstream release
+    qdbm.pc is added.  add depends: pkg-config
+  * bump up lib version to 11.
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Sun, 29 May 2005 01:27:08 +0900
+
+qdbm (1.8.27-2) unstable; urgency=low
+
+  * use $(CC) instead of $(LD) to build *.so.
+    fix failure to build from source on hppa
+    http://buildd.debian.org/fetch.php?&pkg=qdbm&ver=1.8.27-1&arch=hppa&stamp=1116979673&file=log&as=raw
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Fri, 27 May 2005 00:54:17 +0900
+
+qdbm (1.8.27-1) unstable; urgency=low
+
+  * Initial Release.
+    closes: Bug#295249
+
+ -- Fumitoshi UKAI <ukai@debian.or.jp>  Mon, 23 May 2005 00:22:48 +0900

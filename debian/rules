@@ -1,0 +1,208 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Sample debian/rules that uses debhelper.
+# This file was originally written by Joey Hess and Craig Small.
+# As a special exception, when this file is copied by dh-make into a
+# dh-make output file, you may use that output file without restriction.
+# This special exception was added by Craig Small in version 0.37 of dh-make.
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
+# work-around for upstream build that thinks $(HOME) belongs in the
+# include path for all builds!
+export HOME=/nonexistent
+
+# shared library versions, option 1
+major=14
+xmajor=3
+
+# These are used for cross-compiling and for saving the configure script
+# from having to guess our platform (since we know it already)
+include /usr/share/dpkg/architecture.mk
+
+PERL_LIB := $(shell perl -MConfig -e 'print substr($$Config{vendorarch},1)' )
+
+export CFLAGS = -Wall -g $(shell getconf LFS_CFLAGS)
+
+ifneq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
+	WITH_TESTS =
+else
+	WITH_TESTS = y
+endif
+
+ifneq (,$(findstring nojava,$(DEB_BUILD_PROFILES)))
+	WITH_JAVA =
+else
+	WITH_JAVA = y
+endif
+
+CONFIGURE_VARS = CFLAGS="$(CFLAGS)" CPPFLAGS=""
+CONFIGURE_SWITCHES = --host=$(DEB_HOST_GNU_TYPE) \
+	--build=$(DEB_BUILD_GNU_TYPE) \
+	--prefix=/usr \
+	--mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info \
+	--includedir=\$${prefix}/include/qdbm \
+	--enable-pthread --enable-zlib --enable-iconv
+
+JAVA_HOME = /usr/lib/jvm/default-java
+CONFIGURE_VARS += JAVA_HOME="$(JAVA_HOME)"
+
+build: build-arch build-indep
+build-arch: build-stamp
+ifneq "$(WITH_JAVA)" ""
+build-arch: build-java-stamp
+endif
+build-indep: build-arch
+build-stamp:
+	dh_testdir
+ifneq "$(wildcard /usr/share/misc/config.sub)" ""
+	cp -f /usr/share/misc/config.sub config.sub
+endif
+ifneq "$(wildcard /usr/share/misc/config.guess)" ""
+	cp -f /usr/share/misc/config.guess config.guess
+endif
+	autoconf
+	mkdir with-gdbm && cp qdbm.* *ake* config* *.c *.h with-gdbm/
+	$(CONFIGURE_VARS) ./configure $(CONFIGURE_SWITCHES) --disable-gdbm
+	$(MAKE)
+ifneq "$(WITH_TESTS)" ""
+	$(MAKE) check
+endif
+	#cd with-gdbm && $(CONFIGURE_VARS) ./configure $(CONFIGURE_SWITCHES)
+	#cd with-gdbm &&	$(MAKE) && $(MAKE) check
+	cd cgi && $(CONFIGURE_VARS) ./configure $(CONFIGURE_SWITCHES)
+	cd cgi && $(MAKE)
+	cd plus && $(CONFIGURE_VARS) ./configure $(CONFIGURE_SWITCHES)
+	cd plus && $(MAKE)
+ifneq "$(WITH_TESTS)" ""
+	cd plus && $(MAKE) check
+endif
+	cd perl && $(CONFIGURE_VARS) ./configure $(CONFIGURE_SWITCHES)
+	cd perl && $(MAKE)
+ifneq "$(WITH_TESTS)" ""
+	cd perl && $(MAKE) check
+endif
+	touch build-stamp
+
+#build-ruby-stamp: build-stamp
+#	cd ruby && $(CONFIGURE_VARS) ./configure $(CONFIGURE_SWITCHES)
+#	export RUBY=/usr/bin/ruby && cd ruby && $(MAKE)
+#ifneq "$(WITH_TESTS)" ""
+#	export RUBY=/usr/bin/ruby && cd ruby && $(MAKE) check
+#endif
+#	touch build-ruby-stamp
+
+build-java-stamp: build-stamp
+	cd java && CC=gcc $(CONFIGURE_VARS) ./configure $(CONFIGURE_SWITCHES)
+	cd java && $(MAKE) JAVACFLAGS="-d . -source 8 -target 8"
+	touch build-java-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	# Add here commands to clean up after the build process.
+	-cd java && $(MAKE) distclean
+	-cd ruby && $(MAKE) distclean
+	-cd perl && $(MAKE) distclean
+	-cd plus && $(MAKE) distclean
+	-cd cgi && $(MAKE) distclean
+	[ ! -f Makefile ] || $(MAKE) distclean
+	rm -rf ruby19 config.sub config.guess *-stamp with-gdbm debian/tmp-gdbm
+	dh_clean
+
+install: install-stamp install-ruby-stamp
+ifneq "$(WITH_JAVA)" ""
+install: install-java-stamp
+endif
+install-stamp: build
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs
+	# Add here commands to install the package into debian/tmp
+	$(MAKE) install prefix=$(CURDIR)/debian/tmp/usr MYHEADDIR=$(CURDIR)/debian/libqdbm-dev/usr/include/qdbm
+	# cgi
+	cd cgi && install -m 755 *.cgi $(CURDIR)/debian/qdbm-cgi/usr/lib/cgi-bin
+	cd cgi && install -m 644 *.conf $(CURDIR)/debian/qdbm-cgi/etc/qdbm
+	# plus
+	cd plus && $(MAKE) install prefix=$(CURDIR)/debian/libxqdbm$(xmajor)c2/usr MYHEADDIR=$(CURDIR)/debian/libxqdbm-dev/usr/include/qdbm
+	mv $(CURDIR)/debian/libxqdbm$(xmajor)c2/usr/bin/* $(CURDIR)/debian/qdbm-util/usr/bin/
+	mv $(CURDIR)/debian/libxqdbm$(xmajor)c2/usr/lib/libxqdbm.a $(CURDIR)/debian/libxqdbm-dev/usr/lib/
+	mv $(CURDIR)/debian/libxqdbm$(xmajor)c2/usr/lib/libxqdbm.so $(CURDIR)/debian/libxqdbm-dev/usr/lib/
+	# perl
+	cd perl && $(MAKE) install DESTDIR=$(CURDIR)/debian/libqdbm-perl
+	chmod +w $(CURDIR)/debian/libqdbm-perl/$(PERL_LIB)/auto/*/*.so
+	mv $(CURDIR)/debian/libqdbm-perl/usr/bin/* $(CURDIR)/debian/libqdbm-perl/usr/share/doc/libqdbm-perl/examples
+	# fix rpath issue
+	chrpath -d $(CURDIR)/debian/tmp/usr/bin/*
+	chrpath -d $(CURDIR)/debian/tmp/usr/lib/*.so
+	#chrpath -d $(CURDIR)/with-gdbm/*.so
+	chrpath -d $(CURDIR)/debian/qdbm-cgi/usr/lib/cgi-bin/*.cgi
+	chrpath -d $(CURDIR)/debian/libqdbm-perl/$(PERL_LIB)/auto/*/*.so
+	dh_install --sourcedir=$(CURDIR)/debian/tmp
+	#mkdir -p $(CURDIR)/debian/libqdbm14-gdbm/usr/lib
+	#cp -Rf $(CURDIR)/with-gdbm/libqdbm.so.* $(CURDIR)/debian/libqdbm14-gdbm/usr/lib/
+	rm -f $(CURDIR)/debian/qdbm-util/usr/bin/*test
+	find $(CURDIR)/debian -type d -empty -delete
+	touch install-stamp
+
+install-ruby-stamp: install-stamp
+	dh_ruby --install
+	touch install-ruby-stamp
+
+install-java-stamp: install-stamp build-java-stamp
+	dh_installdirs -plibqdbm-java
+	cd java && $(MAKE) install DESTDIR=$(CURDIR)/debian/libqdbm-java
+	cp -L $(CURDIR)/debian/libqdbm-java/usr/lib/libjqdbm.so $(CURDIR)/debian/libqdbm-java/usr/lib/jni/libjqdbm.so
+	mv $(CURDIR)/debian/libqdbm-java/usr/lib/qdbm.jar $(CURDIR)/debian/libqdbm-java/usr/share/qdbm/lib/
+	rm -f $(CURDIR)/debian/libqdbm-java/usr/lib/libjqdbm.so*
+	rm -rf $(CURDIR)/debian/*/usr/share/qdbm/java
+	touch install-java-stamp
+
+# Build architecture-independent files here.
+binary-indep: build install
+	dh_testdir -i
+	dh_testroot -i
+	dh_installchangelogs -i ChangeLog
+	dh_installdocs -i
+	dh_installdocs -A debian/NEWS.Debian
+	dh_installexamples -i
+#	dh_installman -i
+	dh_link -i
+	dh_strip -i
+	dh_strip_nondeterminism -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_perl -i
+#	dh_makeshlibs -i
+	dh_installdeb -i
+	dh_shlibdeps -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir -a
+	dh_testroot -a
+	dh_installchangelogs -a ChangeLog
+	dh_installdocs -a
+	dh_installexamples -a
+	dh_installman -a
+	rm -f $(CURDIR)/debian/qdbm-util/usr/share/man/man1/*test
+	dh_link -a
+	dh_strip -a
+	dh_strip_nondeterminism -a
+	dh_compress -a
+	dh_fixperms -a
+	dh_perl -plibqdbm-perl
+	dh_makeshlibs -a -X libqdbm-java -V
+	dh_installdeb -a
+	dh_shlibdeps -a -l debian/libqdbm$(major)/usr/lib:debian/libxqdbm$(xmajor)c2/usr/lib
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install build-arch build-indep

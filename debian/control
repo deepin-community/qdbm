@@ -1,0 +1,140 @@
+Source: qdbm
+Priority: optional
+Maintainer: Debian QA Group <packages@qa.debian.org>
+Build-Depends: debhelper, autoconf, autotools-dev, zlib1g-dev, perl, gem2deb, default-jdk <!nojava>, chrpath
+Homepage: https://fallabs.com/qdbm/
+Standards-Version: 4.1.3
+Rules-Requires-Root: no
+Vcs-Git: https://salsa.debian.org/debian/qdbm.git
+Vcs-Browser: https://salsa.debian.org/debian/qdbm
+XS-Ruby-Versions: all
+Section: libs
+
+Package: libqdbm14
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: QDBM Database Libraries without GDBM wrapper[runtime]
+ QDBM is an embedded database library compatible with GDBM and NDBM.
+ It features hash database and B+ tree database and is developed referring
+ to GDBM for the purpose of the following three points: higher processing
+ speed, smaller size of a database file, and simpler API.
+ This is the runtime package for programs that use the QDBM database
+ library.
+
+Package: qdbm-doc
+Architecture: all
+Section: doc
+Depends: ${misc:Depends}
+Multi-Arch: foreign
+Description: QDBM Database Documentation
+ Documentation for all of the API's and utilities provided by QDBM.
+
+Package: libqdbm-dev
+Section: libdevel
+Architecture: any
+Depends: libqdbm14 (= ${binary:Version}), ${misc:Depends}
+Recommends: pkg-config
+Suggests: qdbm-doc
+Description: QDBM Database Libraries [development]
+ This is the development package which contains headers and static
+ libraries for the QDBM database library.
+
+Package: qdbm-util
+Architecture: any
+Section: database
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: QDBM Database Utilities
+ QDBM is an embedded database library compatible with GDBM and NDBM.
+ It features hash database and B+ tree database and is developed referring
+ to GDBM for the purpose of the following three points: higher processing
+ speed, smaller size of a database file, and simpler API.
+ This is the QDBM Database utilities package.
+
+Package: qdbm-cgi
+Architecture: any
+Section: database
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: QDBM Database CGI commands
+ This is the QDBM Database command package to be used as CGI commands.
+
+Package: libxqdbm3c2
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Replaces: libqdbm3++c2 (<< 1.8.77-1)
+Breaks: libqdbm3++c2 (<< 1.8.77-1)
+Description: QDBM Database Libraries for C++ [runtime]
+ QDBM is an embedded database library compatible with GDBM and NDBM.
+ It features hash database and B+ tree database and is developed referring
+ to GDBM for the purpose of the following three points: higher processing
+ speed, smaller size of a database file, and simpler API.
+ This is the runtime package for programs that use the QDBM
+ database library.  This is only for programs which use the C++ interface.
+
+Package: libxqdbm-dev
+Architecture: any
+Section: libdevel
+Depends: libxqdbm3c2 (= ${binary:Version}), libqdbm-dev (= ${binary:Version}), ${misc:Depends}
+Replaces: libqdbm-dev (<< 1.8.78-1)
+Suggests: qdbm-doc
+Description: QDBM Database Libraries for C++ [development]
+ This is the development package which contains headers and static
+ libraries for the QDBM database library.  This is only for
+ programs which will use the C++ interface.
+
+Package: libqdbm3++c2
+Architecture: any
+Section: oldlibs
+Depends: libxqdbm3c2 (>= ${binary:Version}), ${misc:Depends}
+Multi-Arch: no
+Description: QDBM Database Libraries for C++ [runtime] (transitional package)
+ This is a dummy package to ease transition to new package name.
+
+Package: libqdbm++-dev
+Architecture: any
+Section: oldlibs
+Depends: libxqdbm-dev (>= ${binary:Version}), ${misc:Depends}
+Suggests: qdbm-doc
+Multi-Arch: no
+Description: QDBM Database Libraries for C++ [development] (transitional package)
+ This is a dummy package to ease transition to new package name.
+
+Package: libqdbm-perl
+Architecture: any
+Section: perl
+Depends: ${shlibs:Depends}, ${perl:Depends}, ${misc:Depends}
+Suggests: qdbm-doc
+Multi-Arch: no
+Description: QDBM Database Libraries for Perl
+ QDBM is an embedded database library compatible with GDBM and NDBM.
+ It features hash database and B+ tree database and is developed referring
+ to GDBM for the purpose of the following three points: higher processing
+ speed, smaller size of a database file, and simpler API.
+ This package provides the Perl interface for the QDBM database library.
+
+Package: ruby-qdbm
+XB-Ruby-Versions: ${ruby:Versions}
+X-DhRuby-Root: ruby
+Architecture: any
+Section: ruby
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Suggests: qdbm-doc
+Multi-Arch: no
+Description: QDBM Database Libraries for Ruby
+ QDBM is an embedded database library compatible with GDBM and NDBM.
+ It features hash database and B+ tree database and is developed referring
+ to GDBM for the purpose of the following three points: higher processing
+ speed, smaller size of a database file, and simpler API.
+ This package provides the Ruby interface for the QDBM database library.
+
+Package: libqdbm-java
+Architecture: any
+Section: java
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Suggests: qdbm-doc, java-virtual-machine
+Build-Profiles: <!nojava>
+Description: QDBM Database Libraries for Java
+ QDBM is an embedded database library compatible with GDBM and NDBM.
+ It features hash database and B+ tree database and is developed referring
+ to GDBM for the purpose of the following three points: higher processing
+ speed, smaller size of a database file, and simpler API.
+ This package provides the Java interface for the QDBM database library.

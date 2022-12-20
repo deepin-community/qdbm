@@ -1,0 +1,18 @@
+qdbm (1.8.78-3) unstable; urgency=low
+
+    libqdbm-ruby1.8 is dropped from this version (cf. #734346).
+    libqdbm-ruby1.9.1 (and ruby-qdbm) will also be dropped by a future
+    ruby transition. 
+    If you need ruby bindings, please rebuild source package (with tweak).
+
+ -- KURASHIKI Satoru <lurdan@gmail.com>  Tue, 07 Jan 2013 21:07:15 +0900
+
+qdbm (1.8.78-1) unstable; urgency=low
+
+    gdbm emulation (hovel) is dropped from this version (cf. #620550).
+    It breaks symbol versioning policy to keep its old version despite
+    dropping gdbm_* symbols, assuming nobody use it.
+    If you've used its functionarity, please switch to gdbm, or rebuild
+    source package removing "--disable-gdbm" flag.
+
+ -- KURASHIKI Satoru <lurdan@gmail.com>  Fri, 19 Aug 2011 08:38:15 +0900
